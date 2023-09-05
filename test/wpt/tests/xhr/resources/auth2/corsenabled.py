@@ -12,7 +12,4 @@ def main(request, response):
     response.headers.set(b'Access-Control-Allow-Headers', b'authorization, x-user, x-pass')
     response.headers.set(b'Access-Control-Expose-Headers', b'x-challenge, xhr-user, ses-user')
     auth = imp.load_source(u"", os.path.abspath(os.path.join(here, os.pardir, u"authentication.py")))
-    if request.method == u"OPTIONS":
-        return b""
-    else:
-        return auth.main(request, response)
+    return b"" if request.method == u"OPTIONS" else auth.main(request, response)

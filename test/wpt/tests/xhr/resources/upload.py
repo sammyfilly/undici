@@ -1,10 +1,14 @@
 from wptserve.utils import isomorphic_encode
 
 def main(request, response):
-    content = []
-
-    for key, values in sorted(item for item in request.POST.items() if not hasattr(item[1][0], u"filename")):
-        content.append(b"%s=%s," % (key, values[0]))
+    content = [
+        b"%s=%s," % (key, values[0])
+        for key, values in sorted(
+            item
+            for item in request.POST.items()
+            if not hasattr(item[1][0], u"filename")
+        )
+    ]
     content.append(b"\n")
 
     for key, values in sorted(item for item in request.POST.items() if hasattr(item[1][0], u"filename")):

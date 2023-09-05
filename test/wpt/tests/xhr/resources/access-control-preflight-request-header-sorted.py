@@ -3,16 +3,15 @@ def main(request, response):
     response.headers.set(b'Access-Control-Allow-Origin',
                          request.headers.get(b'origin'))
 
-    headers = b'x-custom-s,x-custom-test,x-custom-u,x-custom-ua,x-custom-v'
     if request.method == u'OPTIONS':
         response.headers.set(b'Access-Control-Max-Age', b'0')
+        headers = b'x-custom-s,x-custom-test,x-custom-u,x-custom-ua,x-custom-v'
         response.headers.set(b'Access-Control-Allow-Headers', headers)
         # Access-Control-Request-Headers should be sorted.
         if headers != request.headers.get(b'Access-Control-Request-Headers'):
             response.status = 400
+    elif request.headers.get(b'x-custom-s'):
+        response.content = b'PASS'
     else:
-        if request.headers.get(b'x-custom-s'):
-            response.content = b'PASS'
-        else:
-            response.status = 400
-            response.content = b'FAIL'
+        response.status = 400
+        response.content = b'FAIL'

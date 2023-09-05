@@ -24,21 +24,18 @@ def web_socket_transfer_data(request):
             key = GET["key"]
             action = GET["action"]
 
-            if action == "put":
-              value = GET["value"]
-              stash.take(key=key, path=path)
-              stash.put(key=key, value=value, path=path)
-              response_data = json.dumps({"status": "success", "result": key})
-            elif action == "purge":
-             value = stash.take(key=key, path=path)
-             response_data = json.dumps({"status": "success", "result": value})
+            if action == "purge":
+                value = stash.take(key=key, path=path)
+                response_data = json.dumps({"status": "success", "result": value})
+            elif action == "put":
+                value = GET["value"]
+                stash.take(key=key, path=path)
+                stash.put(key=key, value=value, path=path)
+                response_data = json.dumps({"status": "success", "result": key})
             elif action == "take":
-              value = stash.take(key=key, path=path)
-              if value is None:
-                  status = "allowed"
-              else:
-                  status = "blocked"
-              response_data = json.dumps({"status": status, "result": value})
+                value = stash.take(key=key, path=path)
+                status = "allowed" if value is None else "blocked"
+                response_data = json.dumps({"status": status, "result": value})
 
             msgutil.send_message(request, response_data)
 

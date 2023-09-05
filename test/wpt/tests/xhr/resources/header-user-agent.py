@@ -7,9 +7,8 @@ def main(request, response):
         if not request.headers.get(b"User-Agent"):
             response.content = b"FAIL: User-Agent header missing in preflight request."
             response.status = 400
+    elif request.headers.get(b"User-Agent"):
+        response.content = b"PASS"
     else:
-        if request.headers.get(b"User-Agent"):
-            response.content = b"PASS"
-        else:
-            response.content = b"FAIL: User-Agent header missing in request"
-            response.status = 400
+        response.content = b"FAIL: User-Agent header missing in request"
+        response.status = 400

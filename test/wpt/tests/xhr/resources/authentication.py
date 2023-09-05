@@ -7,17 +7,13 @@ def main(request, response):
     if session_user is None and session_pass is None:
         if token is not None and request.server.stash.take(token) is not None:
             return b'FAIL (did not authorize)'
-        else:
-            if token is not None:
-                request.server.stash.put(token, b"1")
-            status = (401, b'Unauthorized')
-            headers = [(b'WWW-Authenticate', b'Basic realm="test"')]
-            return status, headers, b'FAIL (should be transparent)'
+        if token is not None:
+            request.server.stash.put(token, b"1")
+        status = (401, b'Unauthorized')
+        headers = [(b'WWW-Authenticate', b'Basic realm="test"')]
+        return status, headers, b'FAIL (should be transparent)'
     else:
-        if request.server.stash.take(token) == b"1":
-            challenge = b"DID"
-        else:
-            challenge = b"DID-NOT"
+        challenge = b"DID" if request.server.stash.take(token) == b"1" else b"DID-NOT"
         headers = [(b'XHR-USER', expected_user_name),
                    (b'SES-USER', session_user),
                    (b"X-challenge", challenge)]

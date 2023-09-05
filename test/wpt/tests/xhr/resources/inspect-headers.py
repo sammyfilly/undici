@@ -20,13 +20,18 @@ def get_response(raw_headers, filter_value, filter_name):
 def main(request, response):
     headers = []
     if b"cors" in request.GET:
-        headers.append((b"Access-Control-Allow-Origin", b"*"))
-        headers.append((b"Access-Control-Allow-Credentials", b"true"))
-        headers.append((b"Access-Control-Allow-Methods", b"GET, POST, PUT, FOO"))
-        headers.append((b"Access-Control-Allow-Headers", b"x-test, x-foo"))
-        headers.append((
-            b"Access-Control-Expose-Headers",
-            b"x-request-method, x-request-content-type, x-request-query, x-request-content-length"))
+        headers.extend(
+            (
+                (b"Access-Control-Allow-Origin", b"*"),
+                (b"Access-Control-Allow-Credentials", b"true"),
+                (b"Access-Control-Allow-Methods", b"GET, POST, PUT, FOO"),
+                (b"Access-Control-Allow-Headers", b"x-test, x-foo"),
+                (
+                    b"Access-Control-Expose-Headers",
+                    b"x-request-method, x-request-content-type, x-request-query, x-request-content-length",
+                ),
+            )
+        )
     headers.append((b"content-type", b"text/plain"))
 
     filter_value = request.GET.first(b"filter_value", b"")

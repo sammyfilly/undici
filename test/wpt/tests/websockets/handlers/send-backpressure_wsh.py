@@ -31,7 +31,7 @@ def web_socket_transfer_data(request):
     start_time = time.time()
 
     # The large messages that will be blocked by backpressure.
-    for i in range(MESSAGE_COUNT):
+    for _ in range(MESSAGE_COUNT):
         request.ws_stream.send_message(b' ' * MESSAGE_SIZE, binary=True)
 
     # Report the time taken to send the large message.

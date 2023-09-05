@@ -16,10 +16,24 @@ def main(request, response):
     if b"safelist_content_type" in request.GET:
         headers.append((b"Access-Control-Allow-Headers", b"content-type"))
 
-    headers.append((b"X-Request-Method", isomorphic_encode(request.method)))
-    headers.append((b"X-Request-Query", isomorphic_encode(request.url_parts.query) if request.url_parts.query else b"NO"))
-    headers.append((b"X-Request-Content-Length", request.headers.get(b"Content-Length", b"NO")))
-    headers.append((b"X-Request-Content-Type", request.headers.get(b"Content-Type", b"NO")))
-    headers.append((b"X-Request-Data", request.body))
-
+    headers.extend(
+        (
+            (b"X-Request-Method", isomorphic_encode(request.method)),
+            (
+                b"X-Request-Query",
+                isomorphic_encode(request.url_parts.query)
+                if request.url_parts.query
+                else b"NO",
+            ),
+            (
+                b"X-Request-Content-Length",
+                request.headers.get(b"Content-Length", b"NO"),
+            ),
+            (
+                b"X-Request-Content-Type",
+                request.headers.get(b"Content-Type", b"NO"),
+            ),
+            (b"X-Request-Data", request.body),
+        )
+    )
     return headers, b"Test"

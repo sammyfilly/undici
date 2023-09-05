@@ -3,11 +3,7 @@ import gzip as gzip_module
 from io import BytesIO
 
 def main(request, response):
-    if b"content" in request.GET:
-        output = request.GET[b"content"]
-    else:
-        output = request.body
-
+    output = request.GET[b"content"] if b"content" in request.GET else request.body
     out = BytesIO()
     with gzip_module.GzipFile(fileobj=out, mode="w") as f:
         f.write(output)
