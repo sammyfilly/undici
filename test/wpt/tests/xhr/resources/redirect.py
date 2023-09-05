@@ -4,7 +4,9 @@ from wptserve.utils import isomorphic_encode
 
 def main(request, response):
     code = int(request.GET.first(b"code", 302))
-    location = request.GET.first(b"location", isomorphic_encode(request.url_parts.path + u"?followed"))
+    location = request.GET.first(
+        b"location", isomorphic_encode(f"{request.url_parts.path}?followed")
+    )
 
     if b"delay" in request.GET:
         delay = float(request.GET.first(b"delay"))

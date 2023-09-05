@@ -3,12 +3,7 @@ import datetime
 def main(request, response):
     response.headers.set(b"Content-type", b"text/plain")
 
-    # By default use a session cookie.
-    expiration = None
-    if request.GET.get(b"clear"):
-        # If deleting, expire yesterday.
-        expiration = -datetime.timedelta(days=1)
-
+    expiration = -datetime.timedelta(days=1) if request.GET.get(b"clear") else None
     response.set_cookie(b"WK-test", b"1", expires=expiration)
     response.set_cookie(b"WK-test-secure", b"1", secure=True,
                         expires=expiration)

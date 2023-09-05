@@ -17,4 +17,3 @@ def web_socket_transfer_data(request):
         if isinstance(line, str):
             if line == _GOODBYE_MESSAGE:
                 return
-                request.ws_stream.send_message(line, binary=False)

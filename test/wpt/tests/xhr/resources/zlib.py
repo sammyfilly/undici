@@ -1,11 +1,7 @@
 import zlib
 
 def main(request, response):
-    if b"content" in request.GET:
-        output = request.GET[b"content"]
-    else:
-        output = request.body
-
+    output = request.GET[b"content"] if b"content" in request.GET else request.body
     output = zlib.compress(output, 9)
 
     headers = [(b"Content-type", b"text/plain"),

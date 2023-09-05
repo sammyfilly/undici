@@ -6,7 +6,7 @@ def main(request, response):
     if b"origin" in request.GET:
         response.headers.set(b"Access-Control-Allow-Origin", request.GET[b"origin"])
     elif b"origins" in request.GET:
-        for origin in request.GET[b"origins"].split(b','):
+        for _ in request.GET[b"origins"].split(b','):
             response.headers.set(b"Access-Control-Allow-Origin", request.GET[b"origin"])
 
     if b"headers" in request.GET:
@@ -19,8 +19,8 @@ def main(request, response):
     for header in headers:
         headers[header] = headers[header][0]
 
-    str_headers = {}
-    for key, val in headers.items():
-        str_headers[isomorphic_decode(key)] = isomorphic_decode(val)
-
+    str_headers = {
+        isomorphic_decode(key): isomorphic_decode(val)
+        for key, val in headers.items()
+    }
     return json.dumps(str_headers)

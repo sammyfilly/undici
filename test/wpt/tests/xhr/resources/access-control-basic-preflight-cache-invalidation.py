@@ -6,9 +6,7 @@ def main(request, response):
 
     def getState(token):
         server_state = request.server.stash.take(token)
-        if not server_state:
-            return b"Uninitialized"
-        return server_state
+        return b"Uninitialized" if not server_state else server_state
 
     def setState(state, token):
         request.server.stash.put(token, state)
@@ -41,7 +39,7 @@ def main(request, response):
         else:
             fail(state)
     elif state == b"SecondOPTIONSSent":
-        if request.method == u"PUT" or request.method == u"XMETHOD":
+        if request.method in [u"PUT", u"XMETHOD"]:
             response.content = b"PASS: Second OPTIONS request was sent."
         else:
             fail(state)

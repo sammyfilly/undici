@@ -13,4 +13,8 @@ def main(request, response):
 
     for header in [b"Accept", b"Accept-Language", b"Content-Language", b"Content-Type"]:
         value = request.headers.get(header)
-        response.content += isomorphic_decode(header) + u": " + (isomorphic_decode(value) if value else u"<None>") + u'\n'
+        response.content += (
+            f"{isomorphic_decode(header)}: "
+            + (isomorphic_decode(value) if value else u"<None>")
+            + u'\n'
+        )

@@ -14,7 +14,4 @@ def main(request, response):
     auth = imp.load_source(u"", os.path.join(here,
                                              os.pardir,
                                              u"authentication.py"))
-    if request.method == u"OPTIONS":
-        return b""
-    else:
-        return auth.main(request, response)
+    return b"" if request.method == u"OPTIONS" else auth.main(request, response)

@@ -11,7 +11,7 @@ def main(request, response):
     response.close_connection = True
     response.write_status_headers()
     time.sleep(delay)
-    for i in range(count):
+    for _ in range(count):
         response.writer.write_content(b"a\r\nTEST_CHUNK\r\n")
         time.sleep(delay)
     response.writer.write_content(b"garbage")
